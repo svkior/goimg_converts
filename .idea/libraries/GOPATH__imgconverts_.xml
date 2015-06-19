@@ -1,0 +1,32 @@
+<component name="libraryTable">
+  <library name="GOPATH &lt;imgconverts&gt;">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../../golang.org" />
+      <root url="file://$PROJECT_DIR$/../.." />
+      <root url="file://$PROJECT_DIR$/../../../gopkg.in" />
+      <root url="file://$PROJECT_DIR$/../../../github.com" />
+    </CLASSES>
+    <SOURCES />
+    <excluded>
+      <root url="file://$PROJECT_DIR$/../../../github.com/lxn/walk/.git" />
+      <root url="file://$PROJECT_DIR$/../../../github.com/julienschmidt/httprouter/.git" />
+      <root url="file://$PROJECT_DIR$/../../tts/iswextgui/.git" />
+      <root url="file://$PROJECT_DIR$" />
+      <root url="file://$PROJECT_DIR$/../../tts/iswextgui/web/tutor2/.sass-cache" />
+      <root url="file://$PROJECT_DIR$/../newbook/gophler/.idea" />
+      <root url="file://$PROJECT_DIR$/.idea" />
+      <root url="file://$PROJECT_DIR$/../../../github.com/gorilla/websocket/.git" />
+      <root url="file://$PROJECT_DIR$/../newbook/.git" />
+      <root url="file://$PROJECT_DIR$/../../../golang.org/x/image/testdata" />
+      <root url="file://$PROJECT_DIR$/../../../golang.org/x/crypto/ssh/testdata" />
+      <root url="file://$PROJECT_DIR$/../../../golang.org/x/crypto/sha3/testdata" />
+      <root url="file://$PROJECT_DIR$/../../../github.com/igm/pubsub/.git" />
+      <root url="file://$PROJECT_DIR$/../../../golang.org/x/image/.git" />
+      <root url="file://$PROJECT_DIR$/../../../golang.org/x/crypto/.git" />
+      <root url="file://$PROJECT_DIR$/../../../github.com/lxn/win/.git" />
+      <root url="file://$PROJECT_DIR$/../../../gopkg.in/igm/sockjs-go.v2/.git" />
+      <root url="file://$PROJECT_DIR$/../../tts/iswextgui/.idea" />
+      <root url="file://$PROJECT_DIR$/../../../github.com/disintegration/imaging/.git" />
+    </excluded>
+  </library>
+</component>
