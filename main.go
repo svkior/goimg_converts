@@ -20,7 +20,7 @@ func main() {
 
 	if _, err := (MainWindow{
 		AssignTo: &mw.MainWindow,
-		Title:    "Walk ListBox Example",
+		Title:    "Конвертер изображений",
 		MinSize:  Size{240, 320},
 		Size:     Size{400, 600},
 		Layout:   VBox{MarginsZero: true},
@@ -36,7 +36,12 @@ func main() {
 					HSplitter{
 						Children: []Widget{
 							ImageView{
+								Name: "view1",
 								AssignTo: &mw.iw,
+							},
+							ImageView{
+								Name: "view2",
+								AssignTo: &mw.iw2,
 							},
 						},
 
