@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"io/ioutil"
 	"github.com/disintegration/imaging"
 	"image"
 	"os/exec"
@@ -13,6 +12,10 @@ import (
 	"net/url"
 	"sync"
 	"image/color"
+	"runtime"
+	//"github.com/llgcode/draw2d"
+	"path/filepath"
+	"strings"
 )
 
 //go:generate genqrc assets
@@ -66,6 +69,7 @@ func generatePng(){
 }
 
 func main() {
+	runtime.GOMAXPROCS(runtime.NumCPU())
 
 	wg = sync.WaitGroup{}
 
@@ -73,7 +77,7 @@ func main() {
 
 	go generatePng()
 	wg.Add(1)
-	www <- 1024;
+	www <- 1600;
 	log.Println("Waiting:")
 	wg.Wait()
 	log.Println("Done.")
@@ -82,6 +86,13 @@ func main() {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
 		os.Exit(1)
 	}
+}
+
+func exists(path string) (bool, error) {
+	_, err := os.Stat(path)
+	if err == nil { return true, nil }
+	if os.IsNotExist(err) { return false, nil }
+	return true, err
 }
 
 func run() error {
@@ -94,6 +105,21 @@ func run() error {
 		}
 
 		log.Printf("URL path: %v",u.Path)
+
+		mydir, myfile := filepath.Split(u.Path)
+		myext := filepath.Ext(myfile)
+
+		if ok, _ := exists(mydir + "/out"); ok {
+
+		} else {
+			os.MkdirAll(mydir+"/out", os.ModeDir | os.ModePerm)
+		}
+
+		r := strings.NewReplacer(myext, "-wm" + myext)
+		newfiles := mydir + "/out/" + r.Replace(myfile)
+
+		log.Printf("NewFile %s", newfiles)
+
 
 		srcImage, err := imaging.Open(u.Path)
 		if err != nil {
@@ -115,10 +141,14 @@ func run() error {
 		widthRatio := float64(width)/float64(origWIw)
 
 		// С учетом 60% ширины
-		destWidth := int(float64(origWIw) * widthRatio)
-		destHeight := int(float64(origWIh) * widthRatio)
+		destWidth := int(float64(origWIw) * widthRatio * 0.6)
+		destHeight := int(float64(origWIh) * widthRatio  * 0.6)
+
+		//log.Printf("Width: %d, wi Width: %d, Ratio: %f destW: %d", width, origWIw, widthRatio, destWidth )
+
 		wImgFitted := imaging.Fit(waterImg, destWidth, destHeight, imaging.Lanczos)
 
+		//log.Printf("DestWidth: %d", wImgFitted.Bounds().Dx())
 
 		// Нужно расчитать куда выводить ватермарку
 		wmWidth := wImgFitted.Bounds().Dx()
@@ -139,8 +169,10 @@ func run() error {
 		Summ := uint32(0)
 		Count := uint32(0)
 
+
 		for idx :=0; idx < grImg.Bounds().Dx(); idx++ {
 			for idy := 0; idy < grImg.Bounds().Dy(); idy++ {
+
 				oldPixel := grImg.At(idx, idy)
 				r, g, b, _ := oldPixel.RGBA()
 				//log.Printf("%d %d %d %d", r, g, b, a)
@@ -148,44 +180,62 @@ func run() error {
 				Count ++
 			}
 		}
+
 		//log.Printf("Summ: %d, Count: %d, mean: %d", Summ, Count, Summ/Count)
 		meann := Summ/Count
 
+		var cleanImage *image.NRGBA
 
-		cleanImage := imaging.New(width, height,color.RGBA{0, 0, 0, 0})
+		cleanImage = imaging.New(width, height,color.RGBA{0, 0, 0, 0})
 
 
-		waterMarked := imaging.Overlay(cleanImage, wImgFitted, image.Pt(wmBeginX, wmBeginY), 0.95) // FIXME: должно быть 0.15
 
-		mMk2 := imaging.Overlay(waterMarked, wImgFitted, image.Pt(wmBeginX, wmBeginY2), 0.95) // FIXME: должно быть 0.15
+		waterMarked := imaging.Overlay(cleanImage, wImgFitted, image.Pt(wmBeginX, wmBeginY), 1.0) // FIXME: должно быть 0.15
 
-		mMk3 := imaging.Overlay(mMk2, wImgFitted, image.Pt(wmBeginX, wmBeginY3), 0.95) // FIXME: должно быть 0.15
+		mMk2 := imaging.Overlay(waterMarked, wImgFitted, image.Pt(wmBeginX, wmBeginY2), 1.0) // FIXME: должно быть 0.15
+
+		mMk3 := imaging.Overlay(mMk2, wImgFitted, image.Pt(wmBeginX, wmBeginY3), 1.0) // FIXME: должно быть 0.15
 
 		// Делаем Blur
-		bluredImg := imaging.Blur(mMk3, 10)
+		bluredImg := imaging.Blur(mMk3, 5)
 
-		waterImg, _ = imaging.Open("./img/out.png")
+		//
 
-		wmBeginX4 := int(float64(width)*0.9) - waterImg.Bounds().Dx()
-		wmBeginY4 := int(float64(height)*0.9) - waterImg.Bounds().Dy()
+		destWidth = int(float64(origWIw) * widthRatio * 0.2)
+		destHeight = int(float64(origWIh) * widthRatio  * 0.2)
 
+		//log.Printf("Width: %d, wi Width: %d, Ratio: %f destW: %d", width, origWIw, widthRatio, destWidth )
+
+		waterImg2 := imaging.Fit(waterImg, destWidth, destHeight, imaging.Lanczos)
+
+		//log.Printf("DestWidth: %d", wImgFitted.Bounds().Dx())
+
+		wmBeginX4 := int(float64(width)*0.95) - waterImg2.Bounds().Dx()
+		wmBeginY4 := int(float64(height)*0.95) - waterImg2.Bounds().Dy()
+
+		overlayedImg := imaging.Overlay(srcImage, bluredImg, image.Pt(0,0), 0.04)
 
 		var im *image.NRGBA
 
+		//log.Printf("X : %d", wmBeginX4)
+		//log.Printf("Y : %d", wmBeginY4)
+
 		if(meann > 50){
 			log.Printf("Mean: %d", meann)
-			waterImg = imaging.Invert(waterImg)
-			mMk4 := imaging.Overlay(mMk3, waterImg, image.Pt(wmBeginX4, wmBeginY4), 1.0)
-			imaging.Save(mMk4, "test.jpg")
+			waterImg2 = imaging.Invert(waterImg2)
+			mMk4 := imaging.Overlay(overlayedImg, waterImg2, image.Pt(wmBeginX4, wmBeginY4), 1.0)
+			//imaging.Save(mMk4, "test.jpg")
 			im = mMk4
 		} else {
 			log.Printf("Mean: %d", meann)
-			mMk4 := imaging.Overlay(mMk3, waterImg, image.Pt(wmBeginX4, wmBeginY4), 1.0)
-			imaging.Save(mMk4, "test.jpg")
+			mMk4 := imaging.Overlay(overlayedImg, waterImg2, image.Pt(wmBeginX4, wmBeginY4), 1.0)
+			//imaging.Save(mMk4, "test.jpg")
 			im = mMk4
 		}
 
-		im = bluredImg
+		//im = bluredImg
+
+		imaging.Save(im, newfiles)
 
 		return im
 	})
@@ -213,178 +263,4 @@ func rgb2l(r,g,b uint32) (uint32){
 	min = math.Min(rf, math.Min(gf,bf))
 	l = (max + min) / 2
 	return uint32(l*100)
-}
-
-
-type MyMainWindow struct {
-//	*walk.MainWindow
-	model *ImgModel
-//	lb    *walk.ListBox
-//	iw    *walk.ImageView
-//	iw2   *walk.ImageView
-}
-
-
-func (mw *MyMainWindow) lb_CurrentIndexChanged() {
-	i := 0 // mw.lb.CurrentIndex()
-	if i > 1 {
-		return
-	}
-
-	if i < 0 {
-		return
-	}
-	item := &mw.model.items[i]
-
-//	mw.te.SetText(item.path)
-
-
-	srcImage, err := imaging.Open(item.path)
-	if err != nil {
-		return
-	}
-
-	width := srcImage.Bounds().Dx()
-	height := srcImage.Bounds().Dy()
-
-	expWidth := fmt.Sprintf("--export-width=%d", int(float32(width) * 0.6) )
-	//expHeight := fmt.Sprintf("--export-height=%d",height)
-
-	out, err := exec.Command(
-		"C:\\Program Files\\Inkscape\\inkscape.exe",
-		"TTS-watermark-white.svg",
-		"--export-png=out.png",
-		expWidth,
-		//expHeight,
-	).Output()
-
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("Stdout: %s", out)
-
-
-	waterImg, err := imaging.Open("out.png")
-	if err != nil {
-		return
-	}
-
-	// Нужно расчитать куда выводить ватермарку
-	wmWidth := waterImg.Bounds().Dx()
-	wmHeight := waterImg.Bounds().Dy()
-
-	wmBeginX := (width - wmWidth)/2
-	wmBeginY := (height - wmHeight)/2
-
-	wmBeginY2 := int(float32(height)* 0.2) - wmHeight/2
-	wmBeginY3 := int(float32(height)* 0.8) - wmHeight/2
-
-
-	// Делаем Blur
-	bluredImg := imaging.Blur(waterImg, 10)
-
-	// Определеяем какого цвета будем делать Watermark
-	grImg := imaging.Grayscale(srcImage)
-
-	Summ := uint32(0)
-	Count := uint32(0)
-
-	for idx :=0; idx < grImg.Bounds().Dx(); idx++ {
-		for idy := 0; idy < grImg.Bounds().Dy(); idy++ {
-			oldPixel := grImg.At(idx, idy)
-			r, g, b, _ := oldPixel.RGBA()
-			//log.Printf("%d %d %d %d", r, g, b, a)
-			Summ += rgb2l(r,g,b)
-			Count ++
-		}
-	}
-	//log.Printf("Summ: %d, Count: %d, mean: %d", Summ, Count, Summ/Count)
-	meann := Summ/Count
-
-
-
-	waterMarked := imaging.Overlay(srcImage, bluredImg, image.Pt(wmBeginX, wmBeginY), 0.15)
-
-	mMk2 := imaging.Overlay(waterMarked, bluredImg, image.Pt(wmBeginX, wmBeginY2), 0.15)
-
-	mMk3 := imaging.Overlay(mMk2, bluredImg, image.Pt(wmBeginX, wmBeginY3), 0.15)
-
-	expWidth2 := fmt.Sprintf("--export-width=%d", int(float32(width) * 0.2) )
-	out, err = exec.Command(
-		"C:\\Program Files\\Inkscape\\inkscape.exe",
-		"TTS-watermark-white.svg",
-		"--export-png=out2.png",
-		expWidth2,
-		//expHeight,
-	).Output()
-
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("Stdout: %s", out)
-	waterImg, _ = imaging.Open("out2.png")
-
-
-	wmBeginX4 := int(float64(width)*0.9) - waterImg.Bounds().Dx()
-	wmBeginY4 := int(float64(height)*0.9) - waterImg.Bounds().Dy()
-
-
-	if(meann > 50){
-		log.Printf("Mean: %d", meann)
-		waterImg = imaging.Invert(waterImg)
-		mMk4 := imaging.Overlay(mMk3, waterImg, image.Pt(wmBeginX4, wmBeginY4), 1.0)
-//		imaging.Save(mMk4, "test.jpg")
-	} else {
-		log.Printf("Mean: %d", meann)
-		mMk4 := imaging.Overlay(mMk3, waterImg, image.Pt(wmBeginX4, wmBeginY4), 1.0)
-//		imaging.Save(mMk4, "test.jpg")
-	}
-
-
-
-	//img, err := walk.NewImageFromFile("test.jpg")
-	//if err != nil {
-	//	return
-	//}
-
-	//mw.iw.SetImage(img)
-
-	fmt.Println("CurrentIndex: ", i)
-	fmt.Println("CurrentEnvVarName: ", item.name)
-}
-
-
-/* Модель списка изображений */
-
-type ImgItem struct {
-	name string
-	path string
-}
-
-type ImgModel struct {
-//	walk.ListModelBase
-	items []ImgItem
-}
-
-func NewImgModel() *ImgModel {
-	files, _ := ioutil.ReadDir(".\\from")
-
-	m := &ImgModel{items: make([]ImgItem, len(files))}
-
-	for i,f := range files {
-		fmt.Println(f.Name())
-
-		name := f.Name()
-		path := ".\\from\\" + name
-		m.items[i] = ImgItem{name, path}
-	}
-	return m
-}
-
-func (m *ImgModel) ItemCount() int {
-	return len(m.items)
-}
-
-func (m *ImgModel) Value(index int) interface{} {
-	return m.items[index].name
 }

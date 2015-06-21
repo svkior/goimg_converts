@@ -1,6 +1,7 @@
 <component name="libraryTable">
   <library name="GOPATH &lt;imgconverts&gt;">
     <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../../code.google.com" />
       <root url="file://$PROJECT_DIR$/../../../labix.org" />
       <root url="file://$PROJECT_DIR$/../../../golang.org" />
       <root url="file://$PROJECT_DIR$/../../../gopkg.in" />
@@ -71,10 +72,11 @@
       <root url="file://$PROJECT_DIR$/../../../github.com/stretchr/signature/.git" />
       <root url="file://$PROJECT_DIR$/../../../github.com/golang/tools/go/ssa/testdata" />
       <root url="file://$PROJECT_DIR$/../../../golang.org/x/tools/go/ssa/testdata" />
+      <root url="file://$PROJECT_DIR$/../../../github.com/llgcode/draw2d/.git" />
       <root url="file://$PROJECT_DIR$/../ryvok/intergui_pack/programs/server/npm/sacha:spin/node_modules/spin.js/.grunt" />
       <root url="file://$PROJECT_DIR$/../../../github.com/gorilla/mux/.git" />
-      <root url="file://$PROJECT_DIR$/../ryvok/blackboard/awblack/.meteor" />
       <root url="file://$PROJECT_DIR$/../../../github.com/mijia/gobuildweb/todo_server/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-hash/node_modules/.bin" />
+      <root url="file://$PROJECT_DIR$/../ryvok/blackboard/awblack/.meteor" />
       <root url="file://$PROJECT_DIR$/../../../github.com/golang/tools/oracle/testdata" />
       <root url="file://$PROJECT_DIR$/../ryvok/blackboard/.idea" />
       <root url="file://$PROJECT_DIR$/../../../github.com/golang/tools/cmd/vet/testdata" />
@@ -99,10 +101,12 @@
       <root url="file://$PROJECT_DIR$/../../../github.com/BurntSushi/toml/.git" />
       <root url="file://$PROJECT_DIR$/../newbook/ttsy/.idea" />
       <root url="file://$PROJECT_DIR$/../../../github.com/stretchr/objx/.git" />
+      <root url="file://$PROJECT_DIR$/../../../code.google.com/p/freetype-go/testdata" />
       <root url="file://$PROJECT_DIR$/../../../golang.org/x/tools/cmd/cover/testdata" />
       <root url="file://$PROJECT_DIR$/../../tts/light_dali_go/.git" />
       <root url="file://$PROJECT_DIR$/../../../golang.org/x/tools/.git" />
       <root url="file://$PROJECT_DIR$/../../../github.com/mijia/gobuildweb/todo_server/node_modules/envify/node_modules/jstransform/src/__tests__" />
+      <root url="file://$PROJECT_DIR$/../../../code.google.com/p/freetype-go/.hg" />
       <root url="file://$PROJECT_DIR$/../../../gopkg.in/igm/sockjs-go.v2/.git" />
       <root url="file://$PROJECT_DIR$/../../../golang.org/x/tools/refactor/eg/testdata" />
       <root url="file://$PROJECT_DIR$/../newbook/.git" />
@@ -138,6 +142,7 @@
       <root url="file://$PROJECT_DIR$/../../../github.com/disintegration/imaging/.git" />
       <root url="file://$PROJECT_DIR$/../ryvok/intergui_pack/programs/ctl/npm/logging/node_modules/cli-color/test/__playground" />
       <root url="file://$PROJECT_DIR$/../../../golang.org/x/tools/go/gccgoimporter/testdata" />
+      <root url="file://$PROJECT_DIR$/../../../github.com/disintegration/gift/.git" />
       <root url="file://$PROJECT_DIR$/../../../golang.org/x/tools/go/gcimporter/testdata" />
       <root url="file://$PROJECT_DIR$/../../../github.com/stretchr/codecs/.git" />
       <root url="file://$PROJECT_DIR$/../../../gopkg.in/qml.v1/.git" />

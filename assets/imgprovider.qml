@@ -7,7 +7,7 @@ import Qt.labs.folderlistmodel 2.1
 import "./misc"
 
 Item {
-	width: 1024
+	width: 1034
 	height: 768
 	SystemPalette {id: palette}
 	clip: true
@@ -92,13 +92,19 @@ Item {
 	    				}
 	    			}
 				}
-				Image {
-					id: imgSrc
-					width: 800
-					height: 600
-					fillMode: Image.PreserveAspectFit
-			    	source: "./TTS-watermark-white.svg"
-				}	
+				Rectangle{
+					width: 810
+					height: 610				
+					color: "#888888"
+					Image {
+						id: imgSrc
+						width: 800
+						height: 600
+						anchors.centerIn: parent
+						fillMode: Image.PreserveAspectFit
+				    	source: "./TTS-watermark-white.svg"
+					}	
+				}
 
 
 			}

@@ -2,23 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4f9d033a-57ea-4625-9a02-c6321e05f040" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/misc/Selecti.qml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/imgprovider.qml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/inkscape_darwin.go" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/inkscape_windows.go" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/imgconverts.iml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Go_SDK.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out2.png" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/TTS-watermark-white.svg" afterPath="$PROJECT_DIR$/img/TTS-watermark-white.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out.png" afterPath="$PROJECT_DIR$/out.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test.jpg" afterPath="$PROJECT_DIR$/test.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imgconverts" afterPath="$PROJECT_DIR$/imgconverts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/img/out.png" afterPath="$PROJECT_DIR$/img/out.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/GOPATH__imgconverts_.xml" afterPath="$PROJECT_DIR$/.idea/libraries/GOPATH__imgconverts_.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/imgprovider.qml" afterPath="$PROJECT_DIR$/assets/imgprovider.qml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.go" afterPath="$PROJECT_DIR$/main.go" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/qrc.go" afterPath="$PROJECT_DIR$/qrc.go" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="imgconverts.iws" />
@@ -44,10 +33,10 @@
       <file leaf-file-name="main.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7768924">
-              <caret line="339" column="2" selection-start-line="339" selection-start-column="2" selection-end-line="339" selection-end-column="2" />
+            <state vertical-scroll-proportion="0.119521916">
+              <caret line="219" column="41" selection-start-line="219" selection-start-column="41" selection-end-line="219" selection-end-column="41" />
               <folding>
-                <element signature="e#14#175#0" expanded="true" />
+                <element signature="e#14#232#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -482,10 +471,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7768924">
-          <caret line="339" column="2" selection-start-line="339" selection-start-column="2" selection-end-line="339" selection-end-column="2" />
+        <state vertical-scroll-proportion="0.119521916">
+          <caret line="219" column="41" selection-start-line="219" selection-start-column="41" selection-end-line="219" selection-end-column="41" />
           <folding>
-            <element signature="e#14#175#0" expanded="true" />
+            <element signature="e#14#232#0" expanded="true" />
           </folding>
         </state>
       </provider>
