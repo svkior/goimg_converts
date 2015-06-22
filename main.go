@@ -196,11 +196,11 @@ func run() error {
 
 		cleanImage = imaging.New(width, height,color.RGBA{0, 0, 0, 0})
 
-		waterMarked := imaging.Overlay(cleanImage, wImgFitted, image.Pt(wmBeginX, wmBeginY), 1.0) // FIXME: должно быть 0.15
+		waterMarked := imaging.Overlay(cleanImage, wImgFitted, image.Pt(wmBeginX, wmBeginY), 1.0)
 
-		mMk2 := imaging.Overlay(waterMarked, wImgFitted, image.Pt(wmBeginX, wmBeginY2), 1.0) // FIXME: должно быть 0.15
+		mMk2 := imaging.Overlay(waterMarked, wImgFitted, image.Pt(wmBeginX, wmBeginY2), 1.0)
 
-		mMk3 := imaging.Overlay(mMk2, wImgFitted, image.Pt(wmBeginX, wmBeginY3), 1.0) // FIXME: должно быть 0.15
+		mMk3 := imaging.Overlay(mMk2, wImgFitted, image.Pt(wmBeginX, wmBeginY3), 1.0)
 
 		// Делаем Blur
 		bluredImg := imaging.Blur(mMk3, 5)
@@ -217,7 +217,7 @@ func run() error {
 		wmBeginX4 := int(float64(width)*0.95) - waterImg2.Bounds().Dx()
 		wmBeginY4 := int(float64(height)*0.95) - waterImg2.Bounds().Dy()
 
-		overlayedImg := imaging.Overlay(srcImage, bluredImg, image.Pt(0,0), 0.04)
+		overlayedImg := imaging.Overlay(srcImage, bluredImg, image.Pt(0,0), 0.15) // FIXME: Нужно точно знать сколько нужно
 
 		var im *image.NRGBA
 
