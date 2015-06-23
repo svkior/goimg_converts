@@ -33,7 +33,7 @@ Rectangle {
         anchors.fill: parent
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        font.pixelSize: 24
+        font.pixelSize: 14
         color: container.border.color
         text: container.btnText
     }

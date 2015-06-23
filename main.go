@@ -56,7 +56,6 @@ func generatePng(){
 				log.Println("End of executing")
 
 				if err != nil {
-
 					log.Println(out)
 					log.Fatal(err)
 				}
@@ -65,7 +64,6 @@ func generatePng(){
 				wg.Done()
 		}
 	}
-
 }
 
 func main() {
@@ -76,11 +74,11 @@ func main() {
 	www = make(chan int)
 
 	go generatePng()
-	wg.Add(1)
-	www <- 1600;
-	log.Println("Waiting:")
-	wg.Wait()
-	log.Println("Done.")
+	//wg.Add(1)
+	//www <- 1600;
+	//log.Println("Waiting:")
+	//wg.Wait()
+	//log.Println("Done.")
 
 	if err := qml.Run(run); err != nil{
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
@@ -99,15 +97,27 @@ func run() error {
 	engine := qml.NewEngine()
 	engine.AddImageProvider("pwd", func(id string, w, h int) image.Image{
 
+		deadImage := imaging.New(800, 600, color.RGBA{0, 0, 0, 255})
+
 		u, err := url.Parse(id)
 		if err != nil {
 			log.Fatal(err)
 		}
-
+		log.Printf("ID from QT: %s", id)
 		log.Printf("URL path: %v",u.Path)
 
-		mydir, myfile := filepath.Split(u.Path)
+		normalPath := filepath.FromSlash(u.Path)
+
+		if runtime.GOOS == "windows" {
+			normalPath = strings.TrimPrefix(normalPath, "\\")
+		}
+
+		log.Printf("FilePath: %s", normalPath)
+
+		mydir, myfile := filepath.Split(normalPath)
 		myext := filepath.Ext(myfile)
+
+		// FIXME: DOWN!!!!!
 
 		if ok, _ := exists(mydir + "/out"); ok {
 
@@ -121,14 +131,16 @@ func run() error {
 		log.Printf("NewFile %s", newfiles)
 
 
-		srcImage, err := imaging.Open(u.Path)
-		if err != nil {
-			return nil
+		srcImage, err := imaging.Open(normalPath) // FIXME: Error Under Windows
+		if err != nil{
+			log.Printf("Error open image file: %s", normalPath)
+			log.Printf("Number of error: %v", err)
+			return deadImage
 		}
 
 		waterImg, err := imaging.Open("./img/out.png")
 		if err != nil {
-			return nil
+			return deadImage
 		}
 
 		width := srcImage.Bounds().Dx()
@@ -160,15 +172,11 @@ func run() error {
 		wmBeginY2 := int(float32(height)* 0.2) - wmHeight/2
 		wmBeginY3 := int(float32(height)* 0.8) - wmHeight/2
 
-
-
-
 		// Определеяем какого цвета будем делать Watermark
 		grImg := imaging.Grayscale(srcImage)
 
 		Summ := uint32(0)
 		Count := uint32(0)
-
 
 		for idx :=0; idx < grImg.Bounds().Dx(); idx++ {
 			for idy := 0; idy < grImg.Bounds().Dy(); idy++ {
@@ -188,18 +196,14 @@ func run() error {
 
 		cleanImage = imaging.New(width, height,color.RGBA{0, 0, 0, 0})
 
+		waterMarked := imaging.Overlay(cleanImage, wImgFitted, image.Pt(wmBeginX, wmBeginY), 1.0)
 
+		mMk2 := imaging.Overlay(waterMarked, wImgFitted, image.Pt(wmBeginX, wmBeginY2), 1.0)
 
-		waterMarked := imaging.Overlay(cleanImage, wImgFitted, image.Pt(wmBeginX, wmBeginY), 1.0) // FIXME: должно быть 0.15
-
-		mMk2 := imaging.Overlay(waterMarked, wImgFitted, image.Pt(wmBeginX, wmBeginY2), 1.0) // FIXME: должно быть 0.15
-
-		mMk3 := imaging.Overlay(mMk2, wImgFitted, image.Pt(wmBeginX, wmBeginY3), 1.0) // FIXME: должно быть 0.15
+		mMk3 := imaging.Overlay(mMk2, wImgFitted, image.Pt(wmBeginX, wmBeginY3), 1.0)
 
 		// Делаем Blur
 		bluredImg := imaging.Blur(mMk3, 5)
-
-		//
 
 		destWidth = int(float64(origWIw) * widthRatio * 0.2)
 		destHeight = int(float64(origWIh) * widthRatio  * 0.2)
@@ -213,7 +217,7 @@ func run() error {
 		wmBeginX4 := int(float64(width)*0.95) - waterImg2.Bounds().Dx()
 		wmBeginY4 := int(float64(height)*0.95) - waterImg2.Bounds().Dy()
 
-		overlayedImg := imaging.Overlay(srcImage, bluredImg, image.Pt(0,0), 0.04)
+		overlayedImg := imaging.Overlay(srcImage, bluredImg, image.Pt(0,0), 0.15) // FIXME: Нужно точно знать сколько нужно
 
 		var im *image.NRGBA
 

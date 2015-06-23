@@ -77,7 +77,7 @@ Item {
 	    			FolderListModel {
 	        		id: folderModel
 	        		showDirs: false
-	        		nameFilters: ["*.jpg", "*.jpeg", "*.png"]
+	        		nameFilters: ["*.jpg", "*.jpeg", "*.png", "*.JPG", ".JPEG"]
 	    			}
 
 	    			
