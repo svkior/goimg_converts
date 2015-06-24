@@ -40,10 +40,12 @@ func generatePng(){
 				}
 				log.Printf("Current wd: %s", wd)
 
-				fileName := wd + "/img/TTS-watermark-white.svg"
+
+
+				fileName := wd + filepath.FromSlash("/img/TTS-watermark-white.svg")
 				log.Printf("FileName: %s", fileName)
 
-				outFileName := "--export-png="+wd + "/img/out.png"
+				outFileName := "--export-png="+wd + filepath.FromSlash("/img/out.png")
 				log.Println("Executing")
 				out, err := exec.Command(
 					INKSCAPE,
@@ -119,14 +121,16 @@ func run() error {
 
 		// FIXME: DOWN!!!!!
 
-		if ok, _ := exists(mydir + "/out"); ok {
+		outDir := mydir + filepath.FromSlash("/out")
+
+		if ok, _ := exists(outDir ); ok {
 
 		} else {
-			os.MkdirAll(mydir+"/out", os.ModeDir | os.ModePerm)
+			os.MkdirAll(outDir, os.ModeDir | os.ModePerm)
 		}
 
 		r := strings.NewReplacer(myext, "-wm" + myext)
-		newfiles := mydir + "/out/" + r.Replace(myfile)
+		newfiles := outDir + r.Replace(myfile)
 
 		log.Printf("NewFile %s", newfiles)
 
@@ -138,7 +142,7 @@ func run() error {
 			return deadImage
 		}
 
-		waterImg, err := imaging.Open("./img/out.png")
+		waterImg, err := imaging.Open(filepath.FromSlash("./img/out.png"))
 		if err != nil {
 			return deadImage
 		}
