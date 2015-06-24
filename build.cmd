@@ -1,0 +1,2 @@
+genqrc assets
+go build

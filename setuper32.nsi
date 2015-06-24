@@ -32,38 +32,37 @@ File img\out.png
 SetOutPath $INSTDIR\platforms
 File $%PKG_CONFIG_PATH%\..\..\plugins\platforms\qwindows.dll
 
-SetOutPath $INSTDIR\Qt\labs\folderlistmodel
-File $%PKG_CONFIG_PATH%\..\..\qml\Qt\labs\folderlistmodel\plugins.qmltypes
-File $%PKG_CONFIG_PATH%\..\..\qml\Qt\labs\folderlistmodel\qmldir
-File $%PKG_CONFIG_PATH%\..\..\qml\Qt\labs\folderlistmodel\qmlfolderlistmodelplugin.dll
+#SetOutPath $INSTDIR\Qt\labs\folderlistmodel
+#File $%PKG_CONFIG_PATH%\..\..\qml\Qt\labs\folderlistmodel\plugins.qmltypes
+#File $%PKG_CONFIG_PATH%\..\..\qml\Qt\labs\folderlistmodel\qmldir
+#File $%PKG_CONFIG_PATH%\..\..\qml\Qt\labs\folderlistmodel\qmlfolderlistmodelplugin.dll
+
+#SetOutPath $INSTDIR\QtQuick\Controls
+#File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick\Controls\plugins.qmltypes
+#File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick\Controls\qmldir
+#File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick\Controls\qtquickcontrolsplugin.dll
 
 
-SetOutPath $INSTDIR\QtQuick\Controls
-File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick\Controls\plugins.qmltypes
-File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick\Controls\qmldir
-File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick\Controls\qtquickcontrolsplugin.dll
+#SetOutPath $INSTDIR\QtQuick\Dialogs
+#File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick\Dialogs\plugins.qmltypes
+#File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick\Dialogs\qmldir
+#File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick\Dialogs\dialogplugin.dll
 
 
-SetOutPath $INSTDIR\QtQuick\Dialogs
-File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick\Dialogs\plugins.qmltypes
-File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick\Dialogs\qmldir
-File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick\Dialogs\dialogplugin.dll
+#SetOutPath $INSTDIR\QtQuick\Layouts
+#File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick\Layouts\plugins.qmltypes
+#File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick\Layouts\qmldir
+#File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick\Layouts\qquicklayoutsplugin.dll
 
+#SetOutPath $INSTDIR\QtQuick\Window.2
+#File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick\Window.2\plugins.qmltypes
+#File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick\Window.2\qmldir
+#File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick\Window.2\windowplugin.dll
 
-SetOutPath $INSTDIR\QtQuick\Layouts
-File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick\Layouts\plugins.qmltypes
-File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick\Layouts\qmldir
-File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick\Layouts\qquicklayoutsplugin.dll
-
-SetOutPath $INSTDIR\QtQuick\Window.2
-File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick\Window.2\plugins.qmltypes
-File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick\Window.2\qmldir
-File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick\Window.2\windowplugin.dll
-
-SetOutPath $INSTDIR\QtQuick.2
-File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick.2\plugins.qmltypes
-File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick.2\qmldir
-File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick.2\qtquick2plugin.dll
+#SetOutPath $INSTDIR\QtQuick.2
+#File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick.2\plugins.qmltypes
+#File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick.2\qmldir
+#File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick.2\qtquick2plugin.dll
 
 WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TTSImgConverts" "DisplayName" "TTS Watermark Converter"
 WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TTSImgConverts" "UninstallString" "$\"$INSTDIR\uninstaller.exe$\""
@@ -95,8 +94,8 @@ Delete $INSTDIR\*.dll
 RMDir /r $INSTDIR\img
 RMDir /r $INSTDIR\platforms
 
-RMDir /r $INSTDIR\Qt
-RMDir /r $INSTDIR\QtQuick
-RMDir /r $INSTDIR\QtQuick.2
+#RMDir /r $INSTDIR\Qt
+#RMDir /r $INSTDIR\QtQuick
+#RMDir /r $INSTDIR\QtQuick.2
 
 SectionEnd
