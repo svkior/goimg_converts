@@ -27,7 +27,9 @@ File $%PKG_CONFIG_PATH%\..\..\bin\Qt5Widgets.dll
 
 
 SetOutPath $INSTDIR\img
-File img\out.png
+File img\wm_black.png
+File img\wm_main.png
+File img\wm_white.png
 
 SetOutPath $INSTDIR\platforms
 File $%PKG_CONFIG_PATH%\..\..\plugins\platforms\qwindows.dll

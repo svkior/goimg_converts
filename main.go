@@ -133,7 +133,7 @@ func run() error {
 
 
 
-		srcImage, err := imaging.Open(normalPath) // FIXME: Error Under Windows
+		srcImage, err := imaging.Open(normalPath)
 		if err != nil{
 			log.Printf("Error open image file: %s", normalPath)
 			log.Printf("Number of error: %v", err)
@@ -141,11 +141,10 @@ func run() error {
 		}
 
 
-		waterImg, err := imaging.Open(filepath.FromSlash("./img/out.png"))
+		waterImg, err := imaging.Open(filepath.FromSlash("./img/wm_main.png"))
 		if err != nil {
 			return deadImage
 		}
-
 
 		width := srcImage.Bounds().Dx()
 		height := srcImage.Bounds().Dy()
@@ -161,6 +160,7 @@ func run() error {
 		destHeight := int(float64(origWIh) * widthRatio  * 0.6)
 
 		//log.Printf("Width: %d, wi Width: %d, Ratio: %f destW: %d", width, origWIw, widthRatio, destWidth )
+
 
 		wImgFitted := imaging.Fit(waterImg, destWidth, destHeight, imaging.Lanczos)
 
@@ -216,6 +216,15 @@ func run() error {
 
 		//log.Printf("Width: %d, wi Width: %d, Ratio: %f destW: %d", width, origWIw, widthRatio, destWidth )
 
+		if meann > 50 {
+			waterImg, err = imaging.Open(filepath.FromSlash("./img/wm_black.png"))
+		} else {
+			waterImg, err = imaging.Open(filepath.FromSlash("./img/wm_white.png"))
+		}
+		if err != nil {
+			return deadImage
+		}
+
 		waterImg2 := imaging.Fit(waterImg, destWidth, destHeight, imaging.Lanczos)
 
 		//log.Printf("DestWidth: %d", wImgFitted.Bounds().Dx())
@@ -223,26 +232,15 @@ func run() error {
 		wmBeginX4 := int(float64(width)*0.95) - waterImg2.Bounds().Dx()
 		wmBeginY4 := int(float64(height)*0.95) - waterImg2.Bounds().Dy()
 
-		overlayedImg := imaging.Overlay(srcImage, bluredImg, image.Pt(0,0), 0.15) // FIXME: Нужно точно знать сколько нужно
-
+		overlayedImg := imaging.Overlay(srcImage, bluredImg, image.Pt(0,0), 0.10) // Нужно точно знать сколько нужно
 
 		var im *image.NRGBA
 
-		//log.Printf("X : %d", wmBeginX4)
-		//log.Printf("Y : %d", wmBeginY4)
 
-		if(meann > 50){
-			log.Printf("Mean: %d", meann)
-			waterImg2 = imaging.Invert(waterImg2)
-			mMk4 := imaging.Overlay(overlayedImg, waterImg2, image.Pt(wmBeginX4, wmBeginY4), 1.0)
-			//imaging.Save(mMk4, "test.jpg")
-			im = mMk4
-		} else {
-			log.Printf("Mean: %d", meann)
-			mMk4 := imaging.Overlay(overlayedImg, waterImg2, image.Pt(wmBeginX4, wmBeginY4), 1.0)
-			//imaging.Save(mMk4, "test.jpg")
-			im = mMk4
-		}
+		log.Printf("Mean: %d", meann)
+		mMk4 := imaging.Overlay(overlayedImg, waterImg2, image.Pt(wmBeginX4, wmBeginY4), 1.0)
+		//imaging.Save(mMk4, "test.jpg")
+		im = mMk4
 
 		imaging.Save(im, newfiles)
 
