@@ -23,8 +23,9 @@ Item {
 		sidebarVisible: true
 		onAccepted: {
 			console.log("Accepted: ", fileUrls)
-			folderName.text = fileUrls[0]
-			folderModel.folder = fileUrls[0]
+			//folderName.text = fileUrls[0]
+			//folderModel.folder = fileUrls[0]
+			images.scan(fileUrls[0])
 		}
 		onRejected: {
 			console.log("Rejected")
@@ -74,21 +75,18 @@ Item {
 	 			   height: parent.height
 	 			   spacing: 7
 
-	    			FolderListModel {
-	        		id: folderModel
-	        		showDirs: false
-	        		nameFilters: ["*.jpg", "*.jpeg", "*.png", "*.JPG", ".JPEG"]
-	    			}
+	 			   property int curIndex
 
-	    			
-
-	    			model: folderModel
+	    			model: images.len
 	    			delegate: Selecti{
-	    				btnMode: "image://pwd/" + fileURL
-	    				btnSelected: imgSrc.source
+	    				btnText: images.imageName(index)
+	    				btnMode: index
+	    				btnSelected: filesList.curIndex
 	    				onClicked: {
 	    					//console.log("Clicked:", fileURL);
-	    					imgSrc.source = "image://pwd/" + fileURL
+	    					//imgSrc.source = "image://pwd/" + fileURL
+	    					filesList.curIndex = index
+	    					imgSrc.source = "image://pwd/" + index
 	    				}
 	    			}
 				}

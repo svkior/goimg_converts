@@ -9,13 +9,13 @@ import (
 	"math"
 	"gopkg.in/qml.v1"
 	"os"
-	"net/url"
 	"sync"
 	"image/color"
 	"runtime"
 	//"github.com/llgcode/draw2d"
 	"path/filepath"
 	"strings"
+	"strconv"
 )
 
 //go:generate genqrc assets
@@ -97,22 +97,18 @@ func exists(path string) (bool, error) {
 
 func run() error {
 	engine := qml.NewEngine()
+
+	images := &Images{}
+	engine.Context().SetVar("images", images)
 	engine.AddImageProvider("pwd", func(id string, w, h int) image.Image{
 
 		deadImage := imaging.New(800, 600, color.RGBA{0, 0, 0, 255})
 
-		u, err := url.Parse(id)
-		if err != nil {
-			log.Fatal(err)
-		}
 		log.Printf("ID from QT: %s", id)
-		log.Printf("URL path: %v",u.Path)
 
-		normalPath := filepath.FromSlash(u.Path)
+		iid, _ := strconv.Atoi(id)
 
-		if runtime.GOOS == "windows" {
-			normalPath = strings.TrimPrefix(normalPath, "\\")
-		}
+		normalPath := images.Image(iid)
 
 		log.Printf("FilePath: %s", normalPath)
 
@@ -121,18 +117,20 @@ func run() error {
 
 		// FIXME: DOWN!!!!!
 
-		outDir := mydir + filepath.FromSlash("/out")
+		outDir := filepath.Join(mydir,"out")
 
 		if ok, _ := exists(outDir ); ok {
-
+			log.Printf("Dir %s exists", outDir)
 		} else {
+			log.Printf("Dir %s does not exist", outDir)
 			os.MkdirAll(outDir, os.ModeDir | os.ModePerm)
 		}
 
 		r := strings.NewReplacer(myext, "-wm" + myext)
-		newfiles := outDir + r.Replace(myfile)
+		newfiles := filepath.Join(outDir, r.Replace(myfile))
 
 		log.Printf("NewFile %s", newfiles)
+
 
 
 		srcImage, err := imaging.Open(normalPath) // FIXME: Error Under Windows
@@ -142,10 +140,12 @@ func run() error {
 			return deadImage
 		}
 
+
 		waterImg, err := imaging.Open(filepath.FromSlash("./img/out.png"))
 		if err != nil {
 			return deadImage
 		}
+
 
 		width := srcImage.Bounds().Dx()
 		height := srcImage.Bounds().Dy()
@@ -206,8 +206,10 @@ func run() error {
 
 		mMk3 := imaging.Overlay(mMk2, wImgFitted, image.Pt(wmBeginX, wmBeginY3), 1.0)
 
+
 		// Делаем Blur
 		bluredImg := imaging.Blur(mMk3, 5)
+
 
 		destWidth = int(float64(origWIw) * widthRatio * 0.2)
 		destHeight = int(float64(origWIh) * widthRatio  * 0.2)
@@ -222,6 +224,7 @@ func run() error {
 		wmBeginY4 := int(float64(height)*0.95) - waterImg2.Bounds().Dy()
 
 		overlayedImg := imaging.Overlay(srcImage, bluredImg, image.Pt(0,0), 0.15) // FIXME: Нужно точно знать сколько нужно
+
 
 		var im *image.NRGBA
 
@@ -240,8 +243,6 @@ func run() error {
 			//imaging.Save(mMk4, "test.jpg")
 			im = mMk4
 		}
-
-		//im = bluredImg
 
 		imaging.Save(im, newfiles)
 
