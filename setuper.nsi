@@ -65,6 +65,8 @@ File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick.2\plugins.qmltypes
 File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick.2\qmldir
 File $%PKG_CONFIG_PATH%\..\..\qml\QtQuick.2\qtquick2plugin.dll
 
+SetOutPath $INSTDIR
+
 WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TTSImgConverts" "DisplayName" "TTS Watermark Converter"
 WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TTSImgConverts" "UninstallString" "$\"$INSTDIR\uninstaller.exe$\""
 WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TTSImgConverts" "QuietUninstallString" "$\"$INSTDIR\uninstaller.exe$\" /S"
